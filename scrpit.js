@@ -6,15 +6,31 @@ var bgCanvas;
 function fgupload(){
   var fileinput = document.getElementById("fginput");
   fgCanvas = document.getElementById("fgcan");
+  
   fgImage = new SimpleImage(fileinput);
-  fgImage.drawTo(fgCanvas);
+  
+  // Log to check if the image is being loaded
+  console.log(fgImage); 
+  
+  // Check if the image is loaded
+  if (fgImage != null) {
+    fgImage.drawTo(fgCanvas);
+  }
 }
 
 function bgupload(){
   var fileinput = document.getElementById("bginput");
   bgCanvas = document.getElementById("bgcan");
+  
   bgImage = new SimpleImage(fileinput);
-  bgImage.drawTo(bgCanvas);
+  
+  // Log to check if the image is being loaded
+  console.log(bgImage); 
+  
+  // Check if the image is loaded
+  if (bgImage != null) {
+    bgImage.drawTo(bgCanvas);
+  }
 }
 
 function createComposite(){
@@ -37,11 +53,11 @@ function createComposite(){
 
 function greenScreen() {
   if (fgImage == null){
-    alert("Foreground image not loaded");
+    alert("Foreground not loaded");
     return;
   }
   if (bgImage == null){
-    alert("Background image not loaded");
+    alert("Background not loaded");
     return;
   }
   doClear(bgCanvas);
@@ -55,5 +71,5 @@ function clearCanvas(){
 
 function doClear(canvas) {
   var context = canvas.getContext("2d");
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0,0,canvas.width,canvas.height);
 }
