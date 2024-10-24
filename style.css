@@ -1,20 +1,20 @@
 body {
-    background-color: wheat;
-    font-family: Tahoma;
-  }
-  
-  h1 {
-    color: green;
-    font-size: 40px;
-    font-family: Arial;
-  }
-  
-  canvas {
-    border: 1px solid black;
-    height: 200px;
-  }
-  
-  input {
-    font-size: 12pt;
-  }
-  
+  background-color: wheat;
+  font-family: Tahoma;
+}
+
+h1 {
+  color: green;
+  font-size: 40px;
+  font-family: Arial;
+}
+
+canvas {
+  border: 1px solid black;
+  height: 200px;
+  width: 400px;
+}
+
+input {
+  font-size: 12pt;
+}

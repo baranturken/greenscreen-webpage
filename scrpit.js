@@ -3,73 +3,76 @@ var bgImage = null;
 var fgCanvas;
 var bgCanvas;
 
-function fgupload(){
+function fgupload() {
   var fileinput = document.getElementById("fginput");
   fgCanvas = document.getElementById("fgcan");
-  
   fgImage = new SimpleImage(fileinput);
-  
-  // Log to check if the image is being loaded
-  console.log(fgImage); 
-  
-  // Check if the image is loaded
-  if (fgImage != null) {
-    fgImage.drawTo(fgCanvas);
-  }
+
+  // Debugging log
+  console.log(fgImage);
+
+  // Check if the image is loaded before drawing it
+  fgImage.drawTo(fgCanvas); // This attempts to draw the image
+  fgImage.onload = function () {
+    fgImage.drawTo(fgCanvas); // Ensures it draws after loading
+  };
 }
 
-function bgupload(){
+function bgupload() {
   var fileinput = document.getElementById("bginput");
   bgCanvas = document.getElementById("bgcan");
-  
   bgImage = new SimpleImage(fileinput);
-  
-  // Log to check if the image is being loaded
-  console.log(bgImage); 
-  
-  // Check if the image is loaded
-  if (bgImage != null) {
-    bgImage.drawTo(bgCanvas);
-  }
+
+  // Debugging log
+  console.log(bgImage);
+
+  // Check if the image is loaded before drawing it
+  bgImage.drawTo(bgCanvas); // This attempts to draw the image
+  bgImage.onload = function () {
+    bgImage.drawTo(bgCanvas); // Ensures it draws after loading
+  };
 }
 
-function createComposite(){
-    var output = new SimpleImage(fgImage.getWidth(), fgImage.getHeight());
-    var greenThreshold = 240;
-    for (var pixel of fgImage.values()) {
-      var x = pixel.getX();
-      var y = pixel.getY();
-      
-      if (pixel.getGreen() > greenThreshold){
-        var bgPixel = bgImage.getPixel(x, y);
-        output.setPixel(x, y, bgPixel);
-      }
-      else{
-        output.setPixel(x, y, pixel);
-      }
+function createComposite() {
+  var output = new SimpleImage(fgImage.getWidth(), fgImage.getHeight());
+  var greenThreshold = 240;
+
+  for (var pixel of fgImage.values()) {
+    var x = pixel.getX();
+    var y = pixel.getY();
+
+    if (pixel.getGreen() > greenThreshold) {
+      var bgPixel = bgImage.getPixel(x, y);
+      output.setPixel(x, y, bgPixel); // Replace green pixel with background pixel
+    } else {
+      output.setPixel(x, y, pixel); // Keep the original pixel if not green
     }
-    output.drawTo(fgCanvas);
+  }
+
+  output.drawTo(fgCanvas); // Draw the composite image onto the foreground canvas
 }
 
 function greenScreen() {
-  if (fgImage == null){
-    alert("Foreground not loaded");
+  if (fgImage == null) {
+    alert("Foreground image not loaded");
     return;
   }
-  if (bgImage == null){
-    alert("Background not loaded");
+  if (bgImage == null) {
+    alert("Background image not loaded");
     return;
   }
+  
+  // Clear the background canvas before creating the composite
   doClear(bgCanvas);
   createComposite();
 }
 
-function clearCanvas(){
+function clearCanvas() {
   doClear(fgCanvas);
   doClear(bgCanvas);
 }
 
 function doClear(canvas) {
   var context = canvas.getContext("2d");
-  context.clearRect(0,0,canvas.width,canvas.height);
+  context.clearRect(0, 0, canvas.width, canvas.height); // Clear the specified canvas
 }
